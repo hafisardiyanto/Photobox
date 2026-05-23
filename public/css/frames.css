@@ -1,0 +1,158 @@
+.frames-container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    align-items: start;
+}
+
+.preview-box {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 2rem;
+}
+
+.photo-strip-preview {
+    width: 280px;
+    background: white; /* Default frame color */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.photo-strip-preview.dark { background: #1e293b; }
+.photo-strip-preview.pastel { background: #fce7f3; }
+.photo-strip-preview.valentine { 
+    background: #ff4d6d;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='%23ff758f' %3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+    background-size: 50px 50px;
+    background-position: center;
+}
+.photo-strip-preview.sunset { 
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+}
+.photo-strip-preview.cyberpunk { 
+    background: #000;
+    border: 3px solid #00f2ff;
+    box-shadow: 0 0 20px #00f2ff;
+}
+
+.preview-photo {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: #eee;
+}
+
+.preview-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+.settings-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.frame-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.frame-option {
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    border-radius: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.frame-option:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-3px);
+}
+
+.frame-option.active {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+}
+
+.frame-preview-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Preview Colors */
+.preview-minimalist { background: #ffffff; }
+.preview-dark { background: #1e293b; }
+.preview-pastel { background: #fce7f3; }
+.preview-valentine { background: #ff4d6d; }
+.preview-sunset { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+.preview-cyberpunk { background: #000; border-color: #00f2ff; }
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.filter-option {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.filter-option.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Filters */
+.filter-bw { filter: grayscale(1) contrast(1.1); }
+.filter-sepia { filter: sepia(0.8) contrast(1.1); }
+.filter-vintage { filter: sepia(0.25) contrast(1.2) brightness(0.9); }
+.filter-vibrant { filter: saturate(1.6) contrast(1.1); }
+.filter-clarendon { filter: contrast(1.2) saturate(1.35) brightness(1.1); }
+.filter-gingham { filter: brightness(1.05) hue-rotate(-10deg) saturate(0.85); }
+.filter-moon { filter: grayscale(1) contrast(1.3) brightness(1.1); }
+.filter-lark { filter: contrast(0.9) brightness(1.2) saturate(1.2); }
+.filter-reyes { filter: sepia(0.3) contrast(0.85) brightness(1.15) saturate(0.75); }
+.filter-juno { filter: saturate(1.4) contrast(1.1) hue-rotate(-5deg) brightness(1.05); }
+.filter-slumber { filter: brightness(1.1) saturate(0.6) contrast(1.1) sepia(0.1); }
+.filter-glossier { filter: brightness(1.15) contrast(0.85) saturate(1.1) sepia(0.02); }

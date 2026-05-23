@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # PHP application service
+  app:
+    image: php:8.2-fpm
+    container_name: photobox_app
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    environment:
+      # You can adjust these variables as needed
+      APP_ENV: local
+      APP_DEBUG: 'true'
+      APP_KEY: base64:YOUR_APP_KEY_HERE
+    depends_on:
+      - db
+
+  # Nginx web server
+  web:
+    image: nginx:alpine
+    container_name: photobox_web
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  # MySQL database
+  db:
+    image: mysql:8.0
+    container_name: photobox_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret_root_password
+      MYSQL_DATABASE: photobox
+      MYSQL_USER: photobox_user
+      MYSQL_PASSWORD: secret_user_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  # Optional: phpMyAdmin for DB management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: photobox_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: secret_root_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  dbdata:

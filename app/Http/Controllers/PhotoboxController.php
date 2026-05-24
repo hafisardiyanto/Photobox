@@ -101,4 +101,39 @@ class PhotoboxController extends Controller
 
         return response()->json(['success' => true, 'result_id' => $result->id]);
     }
+
+    public function uploadToGallery(Request $request)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+        ]);
+
+        $uuid = (string) Str::uuid();
+        $session = PhotoSession::create([
+            'uuid' => $uuid,
+            'status' => 'completed'
+        ]);
+
+        $frame = Frame::first();
+        if (!$frame) {
+            $frame = Frame::create([
+                'name' => 'Minimalist White',
+                'template_path' => 'templates/white.png',
+                'orientation' => 'vertical',
+                'is_active' => true
+            ]);
+        }
+
+        $file = $request->file('photo');
+        $filename = 'results/' . $uuid . '/' . $file->hashName();
+        Storage::disk('public')->put($filename, file_get_contents($file));
+
+        Result::create([
+            'photo_session_id' => $session->id,
+            'frame_id' => $frame->id,
+            'result_path' => $filename
+        ]);
+
+        return redirect()->route('gallery')->with('success', 'Gambar berhasil diupload ke galeri!');
+    }
 }

@@ -21,10 +21,13 @@
         <div class="flash-overlay" id="flash"></div>
     </div>
 
-    <div class="controls">
-        <button class="btn-primary" id="uploadBtn" style="margin-left: 1rem;">
+    <div class="controls" style="display: flex; gap: 2rem; align-items: center; justify-content: center; margin-top: 1rem;">
+        <button class="btn-capture" id="startBtn" title="Start Session">
+            <div class="inner-circle"></div>
+        </button>
+        <button class="btn-primary" id="uploadBtn" style="height: 50px; padding: 0 1.5rem;">
             Upload Image
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </button>
         <input type="file" accept="image/*" id="uploadInput" style="display:none;">
     </div>
@@ -148,5 +151,41 @@
             console.error("Error saving photo:", err);
         }
     }
+
+    // Upload logic
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadInput = document.getElementById('uploadInput');
+
+    uploadBtn.addEventListener('click', () => {
+        uploadInput.click();
+    });
+
+    uploadInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('photo', file);
+        formData.append('_token', '{{ csrf_token() }}');
+
+        statusLine.innerText = "UPLOADING IMAGE...";
+        uploadBtn.disabled = true;
+
+        try {
+            const response = await fetch('{{ route("gallery.upload") }}', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                window.location.href = '{{ route("gallery") }}';
+            }
+        } catch (err) {
+            console.error("Upload error:", err);
+            statusLine.innerText = "UPLOAD FAILED. TRY AGAIN.";
+            uploadBtn.disabled = false;
+        }
+    });
 </script>
 @endsection

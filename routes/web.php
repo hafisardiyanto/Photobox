@@ -12,3 +12,4 @@ Route::get('/result/{uuid}', [PhotoboxController::class, 'result'])->name('resul
 Route::get('/gallery', [PhotoboxController::class, 'gallery'])->name('gallery');
 Route::post('/store-photo', [PhotoboxController::class, 'storePhoto'])->name('store.photo');
 Route::post('/store-result', [PhotoboxController::class, 'storeResult'])->name('store.result');
+Route::post('/gallery/upload', [PhotoboxController::class, 'uploadToGallery'])->name('gallery.upload');

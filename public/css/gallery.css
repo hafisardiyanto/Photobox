@@ -59,8 +59,24 @@
     color: var(--text-muted);
 }
 
-.empty-gallery {
-    text-align: center;
-    padding: 4rem;
-    color: var(--text-muted);
+.upload-card {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1 / 1.5;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.upload-card:hover {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }

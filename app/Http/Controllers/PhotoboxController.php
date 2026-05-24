@@ -89,10 +89,20 @@ class PhotoboxController extends Controller
         $filename = 'results/' . $request->uuid . '/final_strip.jpg';
         Storage::disk('public')->put($filename, $data);
 
+        $frame = Frame::first();
+        if (!$frame) {
+            $frame = Frame::create([
+                'name' => 'Minimalist White',
+                'template_path' => 'templates/white.png',
+                'orientation' => 'vertical',
+                'is_active' => true,
+            ]);
+        }
+
         $result = Result::updateOrCreate(
             ['photo_session_id' => $session->id],
             [
-                'frame_id' => Frame::first()->id, // Default frame for now
+                'frame_id' => $frame->id,
                 'result_path' => $filename
             ]
         );

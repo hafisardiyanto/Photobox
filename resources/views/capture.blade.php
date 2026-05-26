@@ -23,7 +23,7 @@
 
     <div class="controls" style="display: flex; gap: 2rem; align-items: center; justify-content: center; margin-top: 1rem;">
         <button class="btn-capture" id="startBtn" title="Start Session">
-            <div class="inner-circle"></div>
+            <div class="inner-circle">Click Start Foto</div>
         </button>
         <button class="btn-primary" id="uploadBtn" style="height: 50px; padding: 0 1.5rem;">
             Upload Image
@@ -155,6 +155,7 @@
     // Upload logic
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadInput = document.getElementById('uploadInput');
+
 
     uploadBtn.addEventListener('click', () => {
         uploadInput.click();

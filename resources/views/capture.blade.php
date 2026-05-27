@@ -56,10 +56,32 @@
 
     let currentShot = 0;
     const totalShots = 4;
-    const sessionUuid = crypto.randomUUID();
+    
+    // UUID Fallback for insecure context (HTTP)
+    const generateUUID = () => {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+            return crypto.randomUUID();
+        }
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    };
+    
+    const sessionUuid = generateUUID();
 
     // Init Webcam
     async function initWebcam() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            console.error("Camera API not available. Usually due to insecure context (HTTP) or unsupported browser.");
+            statusLine.innerText = "CAMERA ERROR: HTTPS REQUIRED";
+            statusLine.style.background = "rgba(239, 68, 68, 0.2)";
+            statusLine.style.color = "#ef4444";
+            
+            alert("Kamera tidak dapat diakses. Browser memerlukan koneksi aman (HTTPS) untuk mengizinkan akses kamera jika diakses melalui IP publik.\n\nSilakan gunakan 'localhost' atau pasang SSL (HTTPS).");
+            return;
+        }
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
                 video: { width: 1280, height: 960 }, 
@@ -68,6 +90,9 @@
             video.srcObject = stream;
         } catch (err) {
             console.error("Webcam access denied:", err);
+            statusLine.innerText = "CAMERA ACCESS DENIED";
+            statusLine.style.background = "rgba(239, 68, 68, 0.2)";
+            statusLine.style.color = "#ef4444";
             alert("Harap izinkan akses kamera untuk menggunakan Photobox.");
         }
     }
